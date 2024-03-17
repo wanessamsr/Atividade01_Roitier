@@ -149,5 +149,107 @@ Repositório criado para atividade 01 - Serviços de Redes de Computadores
 };
 
 
+# Testes Realizados
+# DHCP
+Configuração do Servidor DHCP:
+
+O servidor DHCP foi configurado conforme especificado no arquivo dhcpd.conf.
+Foram definidos os parâmetros de sub-rede, intervalo de endereços IP, gateway padrão, servidores DNS e nome de domínio.
+Teste de Conectividade dos Clientes:
+
+Foram configurados clientes para obter endereços IP automaticamente do servidor DHCP.
+Os clientes foram capazes de se conectar à rede e receber endereços IP válidos dentro do intervalo especificado.
+A configuração do gateway padrão e dos servidores DNS também foi bem-sucedida nos clientes.
+
+# DNS
+Configuração do Servidor DNS:
+
+O servidor DNS BIND9 foi configurado conforme especificado no arquivo named.conf.options.
+Foram definidos os servidores DNS forwarders e as permissões de consulta externa.
+Teste de Resolução de Nomes:
+
+Foram realizados testes de resolução de nomes de domínio usando o servidor DNS.
+O servidor DNS foi capaz de resolver nomes de domínio para seus respectivos endereços IP.
+Os clientes foram capazes de se comunicar com outros dispositivos na rede usando os nomes de domínio resolvidos.
+
+# Firewall
+Configuração do Firewall:
+
+O script firewall.sh foi configurado conforme especificado para controlar o tráfego de rede.
+Foram definidas regras para permitir o tráfego de loopback, tráfego DNS e bloquear o tráfego HTTP e HTTPS.
+
+# Teste de Acesso à Rede:
+
+Foram realizados testes de acesso à rede a partir de dispositivos internos e externos.
+O firewall foi capaz de permitir o tráfego necessário para operações de rede, como acesso à Internet e resolução de nomes de domínio.
+O bloqueio do tráfego HTTP e HTTPS foi verificado, impedindo o acesso a sites via navegadores da web.
+
+# Resultados
+Todos os testes foram bem-sucedidos, e os serviços de DHCP, DNS e Firewall foram configurados e funcionando conforme esperado.
+A configuração dos serviços foi validada por meio de testes de conectividade e funcionalidade de rede.
+Não foram encontrados problemas significativos durante o processo de configuração e testes.
+A utilização de volumes Docker foi implementada para persistência de dados quando necessário, garantindo que as configurações dos serviços permaneçam mesmo após reinicializações dos contêineres.
+
+# Passo a Passo: Testes dos Serviços de Rede
+# 1. Configuração dos Serviços
+# 1.1. DHCP:
+
+Configurar o arquivo dhcpd.conf com as opções desejadas.
+Exemplo: nano configs/dhcpd.conf
+# 1.2. DNS:
+
+Configurar o arquivo named.conf.options com as opções desejadas.
+Exemplo: nano configs/named.conf.options
+
+# 1.3. Firewall:
+
+Configurar o script firewall.sh com as regras desejadas.
+Exemplo: nano configs/firewall.sh
+
+# 2. Construção e Execução dos Contêineres Docker
+# 2.1. DHCP:
+
+Construir a imagem do servidor DHCP:
+    docker build -t dhcp_server -f Dockerfile .
+    
+Executar o contêiner DHCP:
+    docker run -d --name dhcp_container dhcp_server
+
+# 2.2. DNS:
+
+Construir a imagem do servidor DNS:
+    docker build -t dns_server -f Dockerfile.dns .
+
+Executar o contêiner DNS:
+    docker run -d --name dns_container dns_server
+
+# 2.3. Firewall:
+
+Construir a imagem do firewall:
+    docker build -t firewall -f Dockerfile.firewall .
+
+Executar o contêiner Firewall:
+    docker run -d --name firewall_container firewall
+
+# 3. Testes de Conectividade e Funcionalidade
+# 3.1. Teste de DHCP:
+
+Verificar o status do servidor DHCP:
+    docker exec -it dhcp_container service isc-dhcp-server status
+
+Conectar um cliente à rede e verificar se obtém um endereço IP atribuído pelo DHCP.
+
+# 3.2. Teste de DNS:
+
+Verificar o status do servidor DNS:
+    docker exec -it dns_container service bind9 status
+
+Realizar consultas de resolução de nomes de domínio:
+    docker exec -it dns_container nslookup example.com
+
+# 3.3. Teste de Firewall:
+
+Verificar o status do firewall:
+    docker exec -it firewall_container iptables -L
 
 
