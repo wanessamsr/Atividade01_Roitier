@@ -1,0 +1,21 @@
+FROM ubuntu:latest
+
+# Install DHCP server
+RUN apt-get update && \
+    apt-get install -y isc-dhcp-server && \
+    apt-get install -y dnsutils && \
+    apt-get install -y net-tools
+
+# Create lease database directory
+RUN mkdir -p /var/lib/dhcp/ && \
+    touch /var/lib/dhcp/dhcpd.leases && \
+    chmod 666 /var/lib/dhcp/dhcpd.leases
+
+# Configure DHCP server
+COPY ./dhcpd.conf /etc/dhcp/dhcpd.conf
+
+# Expose UDP port 67
+EXPOSE 67/udp
+
+# Command to start DHCP
+CMD ["dhcpd", "-f", "-d", "--no-pid"]
