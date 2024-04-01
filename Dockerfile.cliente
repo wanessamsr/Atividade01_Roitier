@@ -1,9 +1,0 @@
-FROM ubuntu:latest
-
-# Abrindo a porta 67 para o DHCP
-RUN apt-get update && apt-get install -y isc-dhcp-client
-RUN apt install net-tools -y
-
-EXPOSE 67/udp
-
-
