@@ -1,7 +1,7 @@
 FROM ubuntu:latest
 
 # Atualizando o repositório e instalando o firewall iptables
-RUN apt-get update && apt-get install -y iptables
+RUN apt-get update && apt-get install -y iptables && apt-get install net-tools -y && apt-get install iputils-ping -y && apt-get install wget -y && apt-get install telnet -y
 
 # Copiando o script de configuração do firewall para dentro do container
 COPY configs/firewall.sh /root/firewall.sh
